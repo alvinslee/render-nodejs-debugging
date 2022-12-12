@@ -1,0 +1,47 @@
+{
+  "name": "node-express-postgres-template",
+  "version": "1.0.0",
+  "description": "A simple template for building APIs using Typescript, Node, Express and Postgres",
+  "main": "index.js",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'npm run build && ts-node dist/index.js'",
+    "start:prod": "NODE_ENV=production ts-node dist/index.js",
+    "build": "tsc --build",
+    "lint": "./node_modules/eslint/bin/eslint.js . --ext .js,.ts",
+    "migrate": "node-pg-migrate -m src/database/migrations",
+    "pretest": "dropdb node-demo-test; createdb node-demo-test; DATABASE_URL=postgres://localhost:5432/node-demo-test npm run migrate up",
+    "test": "env DB_HOST=localhost DB_NAME=node-demo-test jest --detectOpenHandles --verbose",
+    "coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "http-status-codes": "^2.2.0",
+    "node-pg-migrate": "^6.2.2",
+    "npm-check-updates": "^16.3.2",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "@types/config": "^3.3.0",
+    "@types/express": "^4.17.14",
+    "@types/jest": "^29.0.3",
+    "@types/node": "^18.7.21",
+    "@types/node-pg-migrate": "^2.3.1",
+    "@types/nodemon": "^1.19.2",
+    "@types/pg": "^8.6.5",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.3",
+    "nodemon": "^2.0.20",
+    "prettier": "2.7.1",
+    "supertest": "^6.2.4",
+    "ts-jest": "^29.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
+  }
+}

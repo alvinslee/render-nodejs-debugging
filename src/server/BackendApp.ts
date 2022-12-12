@@ -1,0 +1,47 @@
+import express, { Express } from 'express'
+import bodyParser from 'body-parser'
+import { StatusCodes } from 'http-status-codes'
+import {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+} from '../database'
+
+class BackendApp {
+  app: Express
+
+  constructor() {
+    this.app = express()
+    this.routes()
+  }
+
+  /*
+  middleware() {}
+  */
+
+  routes() {
+    // Parse incoming requests data (https://github.com/expressjs/body-parser)
+    this.app.use(bodyParser.json())
+    this.app.use(bodyParser.urlencoded({ extended: true }))
+
+    this.app.get('/api', (_, response) => {
+      response.json({
+        info: 'Node.js, Typescript, Express, and Postgres API',
+        database_host: `${process.env.DB_HOST}`,
+      })
+    })
+    this.app.get('/health', (_, response) => {
+      response.status(StatusCodes.OK).send()
+    })
+
+    this.app.get('/api/users', getUsers)
+    this.app.get('/api/users/:id', getUserById)
+    this.app.post('/api/users', createUser)
+    this.app.put('/api/users/:id', updateUser)
+    this.app.delete('/api/users/:id', deleteUser)
+  }
+}
+
+export default new BackendApp().app
